@@ -56,12 +56,12 @@ export function Gauge({ value, onChange }: GaugeProps) {
     <div className="flex flex-col items-center w-full max-w-[250px] sm:max-w-[300px]">
       <svg
         ref={svgRef}
-        viewBox="-10 -10 120 120"
+        viewBox="-10 -10 120 80"
         className="w-full cursor-pointer"
-        onMouseDown={handleInteraction}
-        onMouseMove={(e) => e.buttons === 1 && handleInteraction(e)}
-        onTouchStart={handleInteraction}
-        onTouchMove={handleInteraction}
+        // onMouseDown={handleInteraction}
+        // onMouseMove={(e) => e.buttons === 1 && handleInteraction(e)}
+        // onTouchStart={handleInteraction}
+        // onTouchMove={handleInteraction}
         aria-label="Gauge control"
         tabIndex={0}
       >

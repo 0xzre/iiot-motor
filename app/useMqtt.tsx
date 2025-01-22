@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import mqtt from 'mqtt';
+import { IClientOptions } from 'mqtt';
 
-const useMqtt = (brokerUrl, options) => {
+const useMqtt = (brokerUrl: string, options: IClientOptions ) => {
   const [client, setClient] = useState<mqtt.MqttClient|null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    if (!client)
+      return;
     const mqttClient = mqtt.connect(brokerUrl, options);
 
     mqttClient.on('connect', () => {
-      console.log('Connected to MQTT broker');
+      console.log(`Connected to MQTT broker ${brokerUrl}`);
       setIsConnected(true);
     });
 
@@ -30,9 +32,9 @@ const useMqtt = (brokerUrl, options) => {
     return () => {
       if (mqttClient) mqttClient.end();
     };
-  }, []);
+  }, [brokerUrl, client, options]);
 
-  return { client, isConnected, messages };
+  return { client, isConnected };
 };
 
 export default useMqtt;

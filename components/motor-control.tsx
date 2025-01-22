@@ -59,17 +59,6 @@ export default function MotorControl({ client }: { client: MqttClient }) {
     console.log("Sending power state to PLC:", !isOn)
   }
 
-  const handleKeypadPress = (key: string) => {
-    if (key === "C") {
-      setInputBuffer("")
-    } else if (key === "Enter") {
-      const newSpeed = Math.min(100, parseInt(inputBuffer) || 0)
-      handleSpeedChange(newSpeed)
-      setInputBuffer("")
-    } else if (inputBuffer.length < 3) {
-      setInputBuffer(prev => `${prev}${key}`)
-    }
-  }
 
   useEffect(() => {
     if (inputBuffer) {
@@ -90,13 +79,13 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             </CardHeader>
             <CardContent className="flex flex-col items-center space-y-4">
               <Gauge value={speed} onChange={handleSpeedChange} />
-              <div className="w-full max-w-xs">
+              {/* <div className="w-full max-w-xs">
                 <SpeedInput value={speed} onChange={handleSpeedChange} />
-              </div>
-              <div className="flex space-x-2">
+              </div> */}
+              {/* <div className="flex space-x-2">
                 <Button onClick={() => handleSpeedChange(Math.max(0, speed - 10))}>-10%</Button>
                 <Button onClick={() => handleSpeedChange(Math.min(100, speed + 10))}>+10%</Button>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
@@ -115,7 +104,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
               <CardTitle>Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Toggle checked={isOn} onCheckedChange={togglePower} />
+              {/* <Toggle checked={isOn} onCheckedChange={togglePower} /> */}
               <div className="rounded-lg bg-gray-100 p-4">
                 <p className="font-medium">Status: <span className="text-blue-600">{status}</span></p>
                 <p className="text-sm text-gray-600">Direction: {direction}</p>
@@ -132,7 +121,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             </CardContent>
           </Card>
 
-          <Card className="col-span-1 sm:col-span-2 lg:col-span-1">
+          {/* <Card className="col-span-1 sm:col-span-2 lg:col-span-1">
             <CardHeader>
               <CardTitle>Control Pad</CardTitle>
             </CardHeader>
@@ -140,7 +129,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
               <Keypad onPress={handleKeypadPress} />
               <p className="mt-2 text-center text-base sm:text-lg font-semibold">Input: {inputBuffer || "---"}</p>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>
