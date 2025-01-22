@@ -106,8 +106,8 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             <CardContent className="space-y-4">
               {/* <Toggle checked={isOn} onCheckedChange={togglePower} /> */}
               <div className="rounded-lg bg-gray-100 p-4">
-                <p className="font-medium">Status: <span className="text-blue-600">{status}</span></p>
-                <p className="text-sm text-gray-600">Direction: {direction}</p>
+                <p className="font-medium">Status: <span className={status == 'Off' ? "text-red-600" : "text-green-600"}>{status}</span></p>
+                <p className="font-medium text-gray-600">Direction: {direction}</p>
               </div>
             </CardContent>
           </Card>
@@ -118,6 +118,9 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             </CardHeader>
             <CardContent>
               <PowerChart power_data={power} />
+              <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
+                Speed
+              </div>
             </CardContent>
           </Card>
 
