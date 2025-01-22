@@ -7,7 +7,7 @@ const useMqtt = (brokerUrl: string, options: IClientOptions ) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (!client)
+    if (client)
       return;
     const mqttClient = mqtt.connect(brokerUrl, options);
 
@@ -32,7 +32,7 @@ const useMqtt = (brokerUrl: string, options: IClientOptions ) => {
     return () => {
       if (mqttClient) mqttClient.end();
     };
-  }, [brokerUrl, client, options]);
+  }, []);
 
   return { client, isConnected };
 };
