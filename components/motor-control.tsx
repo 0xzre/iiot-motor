@@ -17,7 +17,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
   const [isOn, setIsOn] = useState(false)
   const [direction, setDirection] = useState<"forward" | "reverse">("forward")
   const [status, setStatus] = useState("Off")
-  const [inputBuffer, setInputBuffer] = useState("")
+  // const [inputBuffer, setInputBuffer] = useState("")
 
   // Simulate real-time updates
   useEffect(() => {
@@ -60,12 +60,12 @@ export default function MotorControl({ client }: { client: MqttClient }) {
   }
 
 
-  useEffect(() => {
-    if (inputBuffer) {
-      const newSpeed = Math.min(100, parseInt(inputBuffer))
-      handleSpeedChange(newSpeed)
-    }
-  }, [inputBuffer])
+  // useEffect(() => {
+  //   if (inputBuffer) {
+  //     const newSpeed = Math.min(100, parseInt(inputBuffer))
+  //     handleSpeedChange(newSpeed)
+  //   }
+  // }, [inputBuffer])
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
