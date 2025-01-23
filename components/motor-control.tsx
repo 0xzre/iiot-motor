@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Gauge } from "@/components/gauge";
 import { PowerChart } from "@/components/power-chart";
-import { Keypad } from "@/components/keypad";
-import { Toggle } from "@/components/toggle";
-import { SpeedInput } from "@/components/speed-input";
+// import { Keypad } from "@/components/keypad";
+// import { Toggle } from "@/components/toggle";
+// import { SpeedInput } from "@/components/speed-input";
 import { MqttClient } from "mqtt";
 
 export default function MotorControl({ client }: { client: MqttClient }) {
@@ -21,7 +21,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
 
   // Simulate real-time updates
   // useEffect(() => {
-  //   if (isOn) {
+  //   if (!isOn) {
   //     const interval = setInterval(() => {
   //       setPower((prev) => Math.min(100, prev + Math.random() * 5))
   //     }, 1000)
@@ -81,6 +81,17 @@ export default function MotorControl({ client }: { client: MqttClient }) {
 
     return () => clearInterval(timer);
   }, []);
+
+  // Disable SSR
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
