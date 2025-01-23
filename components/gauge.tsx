@@ -7,6 +7,8 @@ interface GaugeProps {
   onChange: (value: number) => void;
 }
 
+const MAX_VALUE = 2;
+
 export function Gauge({ value, onChange }: GaugeProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -14,7 +16,7 @@ export function Gauge({ value, onChange }: GaugeProps) {
     const radius = 50;
     const centerX = 50;
     const centerY = 50;
-    const angle = (value / 100) * Math.PI;
+    const angle = (value / MAX_VALUE) * Math.PI;
     const startX = centerX - radius;
     const startY = centerY;
     const endX = centerX + radius * Math.cos(angle - Math.PI);
@@ -57,7 +59,8 @@ export function Gauge({ value, onChange }: GaugeProps) {
       <svg
         ref={svgRef}
         viewBox="-10 -10 120 80"
-        className="w-full cursor-pointer"
+        // className="w-full cursor-pointer"
+        className="w-full"
         // onMouseDown={handleInteraction}
         // onMouseMove={(e) => e.buttons === 1 && handleInteraction(e)}
         // onTouchStart={handleInteraction}
@@ -86,14 +89,14 @@ export function Gauge({ value, onChange }: GaugeProps) {
           strokeWidth="2"
         />
         <circle cx="50" cy="50" r="3" fill="black" />
-        <text x="5" y="55" className="text-xs fill-gray-500 select-none">
+        <text x="5" y="65" className="text-xs fill-gray-500 select-none">
           0
         </text>
-        <text x="85" y="55" className="text-xs fill-gray-500 select-none">
-          100
+        <text x="90" y="65" className="text-xs fill-gray-500 select-none">
+          {MAX_VALUE}
         </text>
       </svg>
-      <div className="mt-2 sm:mt-4 text-2xl sm:text-3xl font-bold">{Math.round(value)}%</div>
+      <div className="mt-2 sm:mt-4 text-2xl sm:text-3xl font-bold">{value.toFixed(2)} Hz</div>
     </div>
   );
 }
