@@ -27,12 +27,12 @@ ChartJS.register(
   Legend
 )
 
-export function PowerChart({ power_data }: { power_data: number }) {
+export function PowerChart({ power_data, max_speed }: { power_data: number, max_speed: number }) {
   const [data, setData] = useState({
     labels: Array.from({ length: 60 }, (_, i) => i.toString()),
     datasets: [
       {
-        label: "Power Usage",
+        label: "Speed (Frequency)",
         data: Array.from({ length: 60 }, () => 0),
         borderColor: "rgb(75, 192, 192)",
         tension: 0.4,
@@ -64,13 +64,13 @@ export function PowerChart({ power_data }: { power_data: number }) {
       x: {
         type: 'category' as const,
         ticks: {
-          maxTicksLimit: 5,
+          maxTicksLimit: 60,
         },
       },
       y: {
         type: 'linear' as const,
         beginAtZero: true,
-        max: 100,
+        max: max_speed,
       },
     },
     animation: {

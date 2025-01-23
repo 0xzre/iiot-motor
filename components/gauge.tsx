@@ -5,18 +5,19 @@ import { useRef } from "react";
 interface GaugeProps {
   value: number;
   onChange: (value: number) => void;
+  maxSpeed: number;
 }
 
-const MAX_VALUE = 2;
+// const max_speed = 2;
 
-export function Gauge({ value, onChange }: GaugeProps) {
+export function Gauge({ value, onChange, maxSpeed: max_speed }: GaugeProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const getArcPath = (value: number) => {
     const radius = 50;
     const centerX = 50;
     const centerY = 50;
-    const angle = (value / MAX_VALUE) * Math.PI;
+    const angle = (value / max_speed) * Math.PI;
     const startX = centerX - radius;
     const startY = centerY;
     const endX = centerX + radius * Math.cos(angle - Math.PI);
@@ -93,7 +94,7 @@ export function Gauge({ value, onChange }: GaugeProps) {
           0
         </text>
         <text x="90" y="65" className="text-xs fill-gray-500 select-none">
-          {MAX_VALUE}
+          {max_speed}
         </text>
       </svg>
       <div className="mt-2 sm:mt-4 text-2xl sm:text-3xl font-bold">{value.toFixed(2)} Hz</div>

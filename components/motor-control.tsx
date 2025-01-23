@@ -11,6 +11,8 @@ import { PowerChart } from "@/components/power-chart";
 // import { SpeedInput } from "@/components/speed-input";
 import { MqttClient } from "mqtt";
 
+const MAX_SPEED = 2;
+
 export default function MotorControl({ client }: { client: MqttClient }) {
   const [power, setPower] = useState(0);
   const [speed, setSpeed] = useState(0.0);
@@ -23,7 +25,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
   // useEffect(() => {
   //   if (!isOn) {
   //     const interval = setInterval(() => {
-  //       setPower((prev) => Math.min(100, prev + Math.random() * 5))
+  //       setPower((prev) => Math.min(1, prev + Math.random() * 5))
   //     }, 1000)
   //     return () => clearInterval(interval)
   //   } else {
@@ -107,10 +109,10 @@ export default function MotorControl({ client }: { client: MqttClient }) {
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <Card className="col-span-1 sm:col-span-2 lg:col-span-1">
             <CardHeader>
-              <CardTitle>Speed Control</CardTitle>
+              <CardTitle>Speed Status</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center space-y-4">
-              <Gauge value={speed} onChange={handleSpeedChange} />
+              <Gauge value={speed} onChange={handleSpeedChange} maxSpeed={MAX_SPEED} />
               {/* <div className="w-full max-w-xs">
                 <SpeedInput value={speed} onChange={handleSpeedChange} />
               </div> */}
@@ -135,7 +137,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Status</CardTitle>
+              <CardTitle>PLC Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* <Toggle checked={isOn} onCheckedChange={togglePower} /> */}
@@ -162,7 +164,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
               <CardTitle>Performance Monitor</CardTitle>
             </CardHeader>
             <CardContent>
-              <PowerChart power_data={power} />
+              <PowerChart power_data={power} max_speed={MAX_SPEED} />
               <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
                 Speed
               </div>
