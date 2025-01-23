@@ -12,10 +12,12 @@ import { PowerChart } from "@/components/power-chart";
 import { MqttClient } from "mqtt";
 
 const MAX_SPEED = 2;
+const MAX_RPM = 100;
 
 export default function MotorControl({ client }: { client: MqttClient }) {
-  const [power, setPower] = useState(0);
-  const [speed, setSpeed] = useState(0.0);
+  // const [power, setPower] = useState(0);
+  const [frequency, setFrequency] = useState(0.0);
+  const [RPM, setRPM] = useState(0.0);
   const [isOn, setIsOn] = useState(false);
   const [direction, setDirection] = useState<"forward" | "reverse">("forward");
   const [status, setStatus] = useState("Off");
@@ -41,7 +43,9 @@ export default function MotorControl({ client }: { client: MqttClient }) {
       if (topic === "PLC_Motor") {
         console.log(message.toString());
         const data = JSON.parse(message.toString());
-        setSpeed(data.frequency);
+        setFrequency(data.frequency);
+        setRPM(data.encoder);
+        setTime(new Date(data.date));
         setIsOn(data.power_status);
         setDirection(data.rotation_direction ? "forward" : "reverse");
         setStatus(
@@ -51,13 +55,13 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             ? "Manual"
             : "Auto"
         );
-        setPower(data.frequency);
+        // setPower(data.frequency);
       }
     });
   }, [client]);
 
   const handleSpeedChange = (newSpeed: number) => {
-    setSpeed(newSpeed);
+    setFrequency(newSpeed);
     // Here you would send the speed to the PLC
     console.log("Sending speed to PLC:", newSpeed);
   };
@@ -76,13 +80,13 @@ export default function MotorControl({ client }: { client: MqttClient }) {
   //   }
   // }, [inputBuffer])
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setTime(new Date());
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   // Disable SSR
   const [isMounted, setIsMounted] = useState(false);
@@ -112,7 +116,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
               <CardTitle>Speed Status</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center space-y-4">
-              <Gauge value={speed} onChange={handleSpeedChange} maxSpeed={MAX_SPEED} />
+              <Gauge value={frequency} maxSpeed={MAX_SPEED} unit="Hz" />
               {/* <div className="w-full max-w-xs">
                 <SpeedInput value={speed} onChange={handleSpeedChange} />
               </div> */}
@@ -123,7 +127,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* <Card>
             <CardHeader>
               <CardTitle>Power Monitor</CardTitle>
             </CardHeader>
@@ -133,7 +137,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
                 {power.toFixed(1)}% Power Usage
               </p>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card>
             <CardHeader>
@@ -159,14 +163,35 @@ export default function MotorControl({ client }: { client: MqttClient }) {
             </CardContent>
           </Card>
 
+          <Card className="col-span-1 sm:col-span-2 lg:col-span-1">
+            <CardHeader>
+              <CardTitle>Rotation per Minutes</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center space-y-4">
+              <Gauge value={RPM} maxSpeed={MAX_RPM} unit="RPM" />
+              {/* <div className="w-full max-w-xs">
+                <SpeedInput value={speed} onChange={handleSpeedChange} />
+              </div> */}
+              {/* <div className="flex space-x-2">
+                <Button onClick={() => handleSpeedChange(Math.max(0, speed - 10))}>-10%</Button>
+                <Button onClick={() => handleSpeedChange(Math.min(100, speed + 10))}>+10%</Button>
+              </div> */}
+            </CardContent>
+          </Card>
           <Card className="col-span-1 sm:col-span-2 lg:col-span-3">
             <CardHeader>
               <CardTitle>Performance Monitor</CardTitle>
             </CardHeader>
             <CardContent>
-              <PowerChart power_data={power} max_speed={MAX_SPEED} />
+              <PowerChart power_data={frequency} max_speed={MAX_SPEED} />
               <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
                 Speed
+              </div>
+            </CardContent>
+            <CardContent>
+              <PowerChart power_data={RPM} max_speed={MAX_RPM} />
+              <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
+                RPM
               </div>
             </CardContent>
           </Card>

@@ -4,13 +4,14 @@ import { useRef } from "react";
 
 interface GaugeProps {
   value: number;
-  onChange: (value: number) => void;
+  // onChange: (value: number) => void;
+  unit: string;
   maxSpeed: number;
 }
 
 // const max_speed = 2;
 
-export function Gauge({ value, onChange, maxSpeed: max_speed }: GaugeProps) {
+export function Gauge({ value,unit,  maxSpeed: max_speed }: GaugeProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const getArcPath = (value: number) => {
@@ -25,35 +26,35 @@ export function Gauge({ value, onChange, maxSpeed: max_speed }: GaugeProps) {
     return `M ${startX},${startY} A ${radius},${radius} 0 0,1 ${endX},${endY}`;
   };
 
-  const handleInteraction = (event: React.MouseEvent | React.TouchEvent) => {
-    if (!svgRef.current) return;
+  // const handleInteraction = (event: React.MouseEvent | React.TouchEvent) => {
+  //   if (!svgRef.current) return;
 
-    const rect = svgRef.current.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+  //   const rect = svgRef.current.getBoundingClientRect();
+  //   const centerX = rect.width / 2;
+  //   const centerY = rect.height / 2;
 
-    let clientX: number;
-    let clientY: number;
+  //   let clientX: number;
+  //   let clientY: number;
 
-    if ("touches" in event) {
-      clientX = event.touches[0].clientX;
-      clientY = event.touches[0].clientY;
-    } else {
-      clientX = event.clientX;
-      clientY = event.clientY;
-    }
+  //   if ("touches" in event) {
+  //     clientX = event.touches[0].clientX;
+  //     clientY = event.touches[0].clientY;
+  //   } else {
+  //     clientX = event.clientX;
+  //     clientY = event.clientY;
+  //   }
 
-    const dx = clientX - (rect.left + centerX);
-    const dy = centerY - (clientY - rect.top);
-    let angle = Math.atan2(dy, dx);
+  //   const dx = clientX - (rect.left + centerX);
+  //   const dy = centerY - (clientY - rect.top);
+  //   let angle = Math.atan2(dy, dx);
 
-    if (angle < -Math.PI / 2) {
-      angle = Math.PI + angle;
-    }
+  //   if (angle < -Math.PI / 2) {
+  //     angle = Math.PI + angle;
+  //   }
 
-    const newValue = Math.max(0, Math.min(100, ((Math.PI - angle) / Math.PI) * 100));
-    onChange(newValue);
-  };
+  //   const newValue = Math.max(0, Math.min(100, ((Math.PI - angle) / Math.PI) * 100));
+  //   onChange(newValue);
+  // };
 
   return (
     <div className="flex flex-col items-center w-full max-w-[250px] sm:max-w-[300px]">
@@ -97,7 +98,7 @@ export function Gauge({ value, onChange, maxSpeed: max_speed }: GaugeProps) {
           {max_speed}
         </text>
       </svg>
-      <div className="mt-2 sm:mt-4 text-2xl sm:text-3xl font-bold">{value.toFixed(2)} Hz</div>
+      <div className="mt-2 sm:mt-4 text-2xl sm:text-3xl font-bold">{value.toFixed(2)} {unit}</div>
     </div>
   );
 }
