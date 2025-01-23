@@ -84,8 +84,8 @@ export function Gauge({ value, onChange, maxSpeed: max_speed }: GaugeProps) {
         <line
           x1="50"
           y1="50"
-          x2={50 + 45 * Math.cos((value / 100) * Math.PI - Math.PI)}
-          y2={50 + 45 * Math.sin((value / 100) * Math.PI - Math.PI)}
+          x2={50 + 45 * Math.cos((value / max_speed) * Math.PI - Math.PI)}
+          y2={50 + 45 * Math.sin((value / max_speed) * Math.PI - Math.PI)}
           stroke="black"
           strokeWidth="2"
         />
