@@ -22,6 +22,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
   const [direction, setDirection] = useState<"forward" | "reverse">("forward");
   const [status, setStatus] = useState("Off");
   const [time, setTime] = useState(new Date());
+  const [refresh, setRefresh] = useState(false);
 
   // Simulate real-time updates
   // useEffect(() => {
@@ -42,6 +43,7 @@ export default function MotorControl({ client }: { client: MqttClient }) {
       );
       if (topic === "PLC_Motor") {
         console.log(message.toString());
+        setRefresh(prev => !prev)
         const data = JSON.parse(message.toString());
         setFrequency(data.frequency);
         setRPM(data.encoder);
@@ -183,13 +185,13 @@ export default function MotorControl({ client }: { client: MqttClient }) {
               <CardTitle>Performance Monitor</CardTitle>
             </CardHeader>
             <CardContent>
-              <PowerChart power_data={frequency} max_speed={MAX_SPEED} />
+              <PowerChart power_data={frequency} max_speed={MAX_SPEED} refresh={refresh} />
               <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
                 Speed
               </div>
             </CardContent>
             <CardContent>
-              <PowerChart power_data={RPM} max_speed={MAX_RPM} />
+              <PowerChart power_data={RPM} max_speed={MAX_RPM} refresh={refresh}/>
               <div className="mt-2 sm:mt-4 font-bold text-center text-base sm:text-lg ">
                 RPM
               </div>
