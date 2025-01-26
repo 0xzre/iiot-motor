@@ -76,7 +76,11 @@ export async function GET(req: Request) {
     return NextResponse.json(
       {
         message: "Records",
-        data: records,
+        data: {
+          records,
+          min_timestamp: minTimestamp,
+          max_timestamp: maxTimestamp,
+        },
       },
       { status: 200 }
     );
