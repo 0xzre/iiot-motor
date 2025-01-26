@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model hmi_records {
+  power_status       Boolean
+  encoder            Int
+  frequency          Float
+  rotation_direction Boolean
+  digital_input      Int      @db.SmallInt
+  timestamp          DateTime @db.Timestamp(6)
+  id                 String   @id @db.Uuid @default(uuid())
+}
